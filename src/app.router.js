@@ -8,10 +8,20 @@ export const appRouter = (app, express) => {
   app.all("*", (req, res, next) => {
     return next(new Error("page not found", { cause: 404 }));
   });
-  // glopal error handler
+
   app.use((error, req, res, next) => {
-    return res
-      .status(error.cause || 500)
-      .json({ success: false, message: error.message, stack: error.stack });
+    const statusCode = error.cause || error.statusCode || error.status || 500
+    const message = error.message || 'An error occurred'
+
+    const response = {
+      success: false,
+      message: message
+    }
+
+    if (process.env.NODE_ENV === 'development') {
+      response.stack = error.stack
+    }
+
+    return res.status(statusCode).json(response)
   });
 };
