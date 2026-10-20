@@ -1,28 +1,36 @@
 {
+  "name": "back-helper",
+  "version": "2.0.0",
+  "description": "Pro-level Express backend starter — modules, Joi, Sharp/Multer, structured responses",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "starter",
+    "mongoose",
+    "joi",
+    "multer",
+    "sharp"
+  ],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "joi": "^17.12.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mongo": "^0.1.0",
-    "mongoose": "^8.2.4",
+    "mongoose": "^8.9.5",
     "multer": "^1.4.5-lts.1",
-    "nanoid": "^5.0.7",
-    "node": "^18.20.0",
-    "node-schedule": "^2.1.1",
-    "redis": "^5.10.0"
-  },
-  "name": "NFC-backend",
-  "type": "module",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "node dist/setup.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+    "nanoid": "^5.0.9",
+    "nodemailer": "^6.10.1",
+    "redis": "^5.10.0",
+    "sharp": "^0.33.5"
+  }
 }
