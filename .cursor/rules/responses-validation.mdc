@@ -1,0 +1,41 @@
+---
+description: Unified API response envelope and Joi validation
+globs: src/**/*.{js}
+alwaysApply: false
+---
+
+# Responses & validation
+
+## Envelope (always)
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "…",
+  "data": {},
+  "errors": null
+}
+```
+
+- HTTP status **must** equal `statusCode`.
+- Success → `errors: null`. Failure → `success: false`; Joi fills `errors: [{ field, message, type }]`.
+
+## Helpers
+
+```js
+successResponse(res, { statusCode, message, data })
+errorResponse(res, { statusCode, message, data, errors })
+httpError(message, statusCode)          // throw in services
+handleServiceError(res, error)          // in controllers
+ErrorCatch(async (req, res) => { … })   // wrap controllers
+```
+
+## Joi middleware
+
+- `isvalid(schema)` → body  
+- `isvalidQuery(schema)` → query  
+- `isvalidParams(schema)` → params  
+- Options: `abortEarly: false`, `stripUnknown: true`, `convert: true`.
+
+Never invent a second response shape.

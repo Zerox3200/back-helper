@@ -1,0 +1,14 @@
+---
+description: Auth middleware and security defaults
+globs: src/middleware/**/*.js
+alwaysApply: false
+---
+
+# Auth & security
+
+- Use `CheckToken` then `requireRoles("Admin", …)` from `auth.middleware.js`.
+- Read token from `Authorization: Bearer <jwt>` or legacy `headers.token`.
+- Secret: `process.env.SECRET_KEY` (fallback `secretkey` for older .env).
+- Controllers must not verify JWT themselves.
+- Never log tokens or passwords.
+- Static `/uploads` uses `dotfiles: "deny"`.

@@ -1,0 +1,38 @@
+---
+description: Core backend folder structure and conventions for this Express starter
+alwaysApply: true
+---
+
+# Backend structure
+
+> Full APIs, recipes, and routes live in `.cursor/memory/` — read `MEMORY.md` before opening source.
+
+## Layout
+
+```
+index.js                 # bootstrap (cors, dotenv, listen)
+DB/
+  connection.js
+  <Entity>/<Entity>.model.js
+src/
+  app.router.js          # mount modules + global error handler
+  helpers/               # response, httpError (no Express coupling to DB)
+  middleware/            # validation, auth, …
+  utils/                 # multer/sharp, ErrorCatch, redis, mail
+  modules/<Feature>/
+    <Feature>.validation.js
+    <Feature>.service.js
+    <Feature>.controller.js
+    <Feature>.router.js
+```
+
+## Rules
+
+- One feature = one folder under `src/modules/`.
+- Flow: **router → validation → (upload) → controller → service → model**.
+- Controllers stay thin: parse request, call service, return `successResponse` / `handleServiceError`.
+- Business logic and DB queries live in **services** only.
+- Models live under `DB/<Entity>/`, not inside modules.
+- Mount every new router in `src/app.router.js`.
+- Prefer ESM (`import`/`export`). Keep `"type": "module"` in package.json.
+- Never commit `.env` or `uploads/`.

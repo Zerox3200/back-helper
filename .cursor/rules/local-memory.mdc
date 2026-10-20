@@ -1,0 +1,27 @@
+---
+description: Use project-local .cursor/memory before reading source; keep memory updated
+alwaysApply: true
+---
+
+# Local memory (source of truth for agents)
+
+Supermemory MCP is **disabled**. All project knowledge lives in `.cursor/memory/`.
+
+## Before coding
+
+1. Read `.cursor/memory/MEMORY.md` (index).
+2. Open only the linked topic file(s) needed for the task.
+3. Prefer memory over re-reading `src/` / `DB/` unless memory is missing or clearly stale.
+
+## After coding (non-trivial changes)
+
+Update memory in the same turn:
+- New module / route / env var / helper export → update the matching topic file + `MEMORY.md` index.
+- New decision or gotcha → append to `decisions.md`.
+- Follow `.cursor/skills/memory-save/SKILL.md`.
+
+## Do not
+
+- Call `supermemory_*` tools.
+- Dump secrets (tokens, passwords) into memory.
+- Duplicate entire source files — store APIs, paths, recipes, contracts.
