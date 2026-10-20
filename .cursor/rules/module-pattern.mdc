@@ -1,0 +1,36 @@
+---
+description: Module pattern — validation, service, controller, router
+globs: src/modules/**/*.js
+alwaysApply: false
+---
+
+# Module pattern
+
+When adding a feature `Foo`:
+
+1. `DB/Foo/Foo.model.js` — Mongoose schema
+2. `src/modules/Foo/Foo.validation.js` — Joi schemas
+3. `src/modules/Foo/Foo.service.js` — business logic; throw `httpError(msg, status)`
+4. `src/modules/Foo/Foo.controller.js` — wrap with `ErrorCatch`; use response helpers
+5. `src/modules/Foo/Foo.router.js` — wire middleware order:
+
+```js
+router.post(
+  "/",
+  ...imageUpload(UPLOAD_PRESETS.avatar({ folder: "foos" })), // optional
+  isvalid(createFooSchema),
+  FooController.create
+);
+```
+
+## Naming
+
+- Files: `Foo.service.js`, `Foo.controller.js`, …
+- Exports: named functions (`createFoo`, `listFoos`), not default class blobs.
+- Params schema separate from body schema (`isvalidParams` / `isvalid` / `isvalidQuery`).
+
+## Do not
+
+- Put Joi schemas inside controllers.
+- Query mongoose directly from routers.
+- Return raw `res.json({…})` — always use response helpers.

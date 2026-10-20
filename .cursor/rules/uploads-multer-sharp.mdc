@@ -1,0 +1,49 @@
+---
+description: Dynamic Multer + Sharp upload conventions
+globs: src/**/*multer*.js,src/modules/**/*.router.js
+alwaysApply: false
+---
+
+# Uploads (Multer + Sharp)
+
+Use `src/utils/multer.js` only — do not add ad-hoc multer configs in routers.
+
+## Prefer presets
+
+```js
+import { imageUpload, fileUpload, UPLOAD_PRESETS, pdfUpload } from "../../utils/multer.js";
+
+...imageUpload(UPLOAD_PRESETS.avatar({ folder: "users" }))
+...imageUpload(UPLOAD_PRESETS.gallery({ folder: "products", maxCount: 8 }))
+...fileUpload(UPLOAD_PRESETS.pdf({ folder: "tickets" }))
+...spreadsheetUpload({ folder: "imports" })
+```
+
+## Custom image config
+
+```js
+...imageUpload({
+  folder: "custom",
+  fields: "image",          // string | string[] | { name, maxCount }[]
+  maxCount: 1,
+  generateLQIP: true,
+  lqipAsFile: false,
+  compressOptions: { quality: 85, maxWidth: 1600, format: "jpeg" },
+  fileFilter: "image",      // or FILE_KINDS key / custom { allowedMimeTypes, allowedExtensions }
+  limits: { fileSize: 5 * 1024 * 1024 },
+})
+```
+
+## Controllers
+
+```js
+const { path, lqip } = getSingleImage(req, "image");
+const { paths, lqips } = getMultipleImages(req, "images");
+```
+
+## Security (keep these)
+
+- Random disk names (`nanoid`) — never trust client filenames on disk.
+- Reject SVG/HTML/executable MIME.
+- Magic-byte validation after upload.
+- Relative paths under `/uploads/...` only in API responses.
